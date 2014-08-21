@@ -1,0 +1,7 @@
+﻿## Interface: 40300
+## Title: Mactics
+## Notes: Prints tactics for the betterment of WoWkind.
+## Version: 1.0
+## LoadOnDemand: 0
+## Dependencies:
+mactics.lua
