@@ -29,7 +29,7 @@ When you issue the **/mct** command, a honey bee refracts the light of the
 sun onto the back of a horse. When the refracted light hits this horse, it
 feels an uncontrollable urge to dance. The horse is stood on top of a giant
 keyboard, and her dance just so happens to type in the correct tactics for
-the boss you're **/mct**ing.
+the boss you're **/mct** ing.
 
 If you don't believe that, Mactics uses a pseudo-plugin architecture to load
 tactics based on the instance you're in. This ensures that functionality is
