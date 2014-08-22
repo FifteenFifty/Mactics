@@ -1,10 +1,5 @@
 local macticsFrame = CreateFrame("Frame")
 
-macticsFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-macticsFrame:RegisterEvent("ADDON_LOADED")
-macticsFrame:RegisterEvent("PLAYER_LOGIN")
-macticsFrame:SetScript("OnEvent", frameEvent)
-
 --
 -- This function is called whenever a registered event occurs
 --
@@ -14,7 +9,7 @@ macticsFrame:SetScript("OnEvent", frameEvent)
 --                  event pertains.
 --
 local function frameEvent(self, event, addonName, ...)
-    if (addonName== "Mactics") then
+    if (addonName== "mactics-core") then
         SLASH_MCT1 = '/mct'
         print("Mactics loaded :)")
         debug()
@@ -25,6 +20,11 @@ local function frameEvent(self, event, addonName, ...)
         loadZoneTactics(GetCurrentMapAreaID())
     end
 end
+
+macticsFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+macticsFrame:RegisterEvent("ADDON_LOADED")
+macticsFrame:RegisterEvent("PLAYER_LOGIN")
+macticsFrame:SetScript("OnEvent", frameEvent)
 
 --
 -- This function processes any slash command that is registered
@@ -70,7 +70,6 @@ end
 -- @param
 -- @param
 --
-
 function printTacts(mobId, chatName)
     local id=tonumber(string.sub(mobId,-12,-9),16)
     print("lel, that's not implemented yet");
@@ -90,8 +89,6 @@ function loadZoneTactics(areaId)
     print("Loading tactics for zone " .. areaId)
 
     --This is the part where we load the addon containing relevant tactics
-
-
 end
 
 function registerMe(name)
