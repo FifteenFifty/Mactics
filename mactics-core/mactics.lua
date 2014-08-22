@@ -26,7 +26,6 @@ local function frameEvent(self, event, addonName, ...)
     end
 end
 
-
 --
 -- This function processes any slash command that is registered
 --
@@ -93,4 +92,8 @@ function loadZoneTactics(areaId)
     --This is the part where we load the addon containing relevant tactics
 
 
+end
+
+function registerMe(name)
+    print(name .. " had just registered, cool")
 end
