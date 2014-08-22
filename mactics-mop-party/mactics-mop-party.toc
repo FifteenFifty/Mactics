@@ -2,6 +2,6 @@
 ## Title: Mactics
 ## Notes: Mactics Mists of Pandaria party tactics module.
 ## Author: FifteenFifty
-## Dependencies: Mactics
+## Dependencies: mactics-core
 ## LoadOnDemand: 1
 mactics-mop-party.lua

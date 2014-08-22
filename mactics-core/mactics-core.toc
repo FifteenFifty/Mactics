@@ -4,4 +4,4 @@
 ## Version: 1.0
 ## LoadOnDemand: 0
 ## Dependencies:
-mactics.lua
+mactics-core.lua
