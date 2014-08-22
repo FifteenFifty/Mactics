@@ -1,0 +1,7 @@
+## Interface: 50400
+## Title: Mactics
+## Notes: Mactics Mists of Pandaria party tactics module.
+## Author: FifteenFifty
+## Dependencies: Mactics
+## LoadOnDemand: 1
+mactics-mop-party.lua
