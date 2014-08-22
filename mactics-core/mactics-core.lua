@@ -1,5 +1,30 @@
 local macticsFrame = CreateFrame("Frame")
 
+macticsFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+macticsFrame:RegisterEvent("ADDON_LOADED")
+macticsFrame:RegisterEvent("PLAYER_LOGIN")
+macticsFrame:SetScript("OnEvent", frameEvent)
+macticsFrame:SetScript("OnEvent", function(self, event, addonName, ...)
+    if (addonName== "mactics-core") then
+        SLASH_MCT1 = '/mct'
+		
+		--SendChatMessage("debug1" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
+        print("Mactics loaded :)")
+		--SendChatMessage("debug2" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
+        debug()
+		--SendChatMessage("debug3" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
+        loadZoneTactics(GetCurrentMapAreaID())
+		--SendChatMessage("debug4" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
+    end
+
+    if (event == "ZONE_CHANGED_NEW_AREA") then
+	--SendChatMessage("debug5" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
+        loadZoneTactics(GetCurrentMapAreaID())
+		--SendChatMessage("debug6" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
+    end
+	--SendChatMessage("debug7" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
+end)
+
 --
 -- This function is called whenever a registered event occurs
 --
@@ -8,23 +33,6 @@ local macticsFrame = CreateFrame("Frame")
 -- @param addonName A string containing the name of the addon to which this
 --                  event pertains.
 --
-local function frameEvent(self, event, addonName, ...)
-    if (addonName== "mactics-core") then
-        SLASH_MCT1 = '/mct'
-        print("Mactics loaded :)")
-        debug()
-        loadZoneTactics(GetCurrentMapAreaID())
-    end
-
-    if (event == "ZONE_CHANGED_NEW_AREA") then
-        loadZoneTactics(GetCurrentMapAreaID())
-    end
-end
-
-macticsFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-macticsFrame:RegisterEvent("ADDON_LOADED")
-macticsFrame:RegisterEvent("PLAYER_LOGIN")
-macticsFrame:SetScript("OnEvent", frameEvent)
 
 --
 -- This function processes any slash command that is registered

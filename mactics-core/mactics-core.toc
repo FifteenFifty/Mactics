@@ -1,5 +1,5 @@
 ﻿## Interface: 50400
-## Title: Mactics
+## Title: Mactics-Core
 ## Notes: Prints tactics for the betterment of WoWkind.
 ## Version: 1.0
 ## LoadOnDemand: 0

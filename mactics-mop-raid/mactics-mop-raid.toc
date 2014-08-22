@@ -1,5 +1,5 @@
 ## Interface: 50400
-## Title: Mactics
+## Title: Mactics-Raid-MoP
 ## Notes: Mactics Mists of Pandaria raid tactics module.
 ## Author: FifteenFifty
 ## RequiredDeps: mactics-core
