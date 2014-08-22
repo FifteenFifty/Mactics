@@ -79,7 +79,7 @@ end
 
 --
 -- This function is called when a user switches zones, and once on initial
--- load. It should load into memory the tactics for the current zone.
+-- load. It should load the sub-addon containing zone tactics.
 --
 -- @note If the user moves out of an applicable zone, there is no need to
 --        unload any tactics currently being held in memory.
@@ -89,4 +89,8 @@ end
 --
 function loadZoneTactics(areaId)
     print("Loading tactics for zone " .. areaId)
+
+    --This is the part where we load the addon containing relevant tactics
+
+
 end
