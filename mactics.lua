@@ -1,11 +1,20 @@
-SLASH_MCT1 = '/mct';
+local macticsFrame = CreateFrame("Frame")
+
+local function aTest(self, event, arg1, ...)
+    if (arg1 == "Mactics") then
+        SLASH_MCT1 = '/mct'
+        print("Mactics loaded :)")
+        debug()
+    end
+end
+
+macticsFrame:RegisterEvent("ADDON_LOADED")
+macticsFrame:RegisterEvent("PLAYER_LOGIN")
+macticsFrame:SetScript("OnEvent", aTest)
 
 function SlashCmdList.MCT(msg, editbox)
     if msg == 'debug' then
-        if UnitGUID("target") then
-            print("Mob ID: " .. tonumber(string.sub(UnitGUID("target"),-12,-9),16));
-            print ("Instance ID: " .. GetCurrentMapAreaID());
-        end
+        debug();
     else if msg == '?' then
         print("Mactics");
         print("Usage: Target boss and /mct");
@@ -18,6 +27,17 @@ function SlashCmdList.MCT(msg, editbox)
     else if UnitGUID("target") then
         printTacts(UnitGUID("target"), "party");
     end
+end
+end
+end
+end
+
+function debug()
+    if UnitGUID("target") then
+        print("Mob ID: " .. tonumber(string.sub(UnitGUID("target"),-12,-9),16));
+    end
+
+    print ("Instance ID: " .. GetCurrentMapAreaID());
 end
 
 function printTacts(mobID, chatName)
