@@ -1,7 +1,7 @@
 ## Interface: 50400
-## Title: Mactics-Raid-MoP
+## Title: Mactics_Raid_MoP
 ## Notes: Mactics Mists of Pandaria raid tactics module.
 ## Author: FifteenFifty
-## RequiredDeps: mactics-core
+## RequiredDeps: Mactics_Core
 ## LoadOnDemand: 1
-mactics-mop-raid.lua
+Mactics_Raid_MoP.lua

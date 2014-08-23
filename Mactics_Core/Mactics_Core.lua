@@ -1,4 +1,8 @@
-local macticsFrame = CreateFrame("Frame")
+local macticsFrame  = CreateFrame("Frame")
+local macticsLoaded = 0
+
+addonMap            = {}
+currentLoadedPlugin = ""
 
 --
 -- This function is called whenever a registered event occurs
@@ -9,14 +13,18 @@ local macticsFrame = CreateFrame("Frame")
 --                  event pertains.
 --
 local function frameEvent(self, event, addonName, ...)
-    if (addonName== "mactics-core") then
+    if (addonName == "mactics-core") then
+        macticsLoaded = 1
         SLASH_MCT1 = '/mct'
+
+        gatherChildren()
+
         print("Mactics loaded :)")
         debug()
         loadZoneTactics(GetCurrentMapAreaID())
     end
 
-    if (event == "ZONE_CHANGED_NEW_AREA") then
+    if (macticsLoaded == 1 and event == "ZONE_CHANGED_NEW_AREA") then
         loadZoneTactics(GetCurrentMapAreaID())
     end
 end
@@ -34,23 +42,30 @@ macticsFrame:SetScript("OnEvent", frameEvent)
 -- @param editbox I have literally no idea
 --
 function SlashCmdList.MCT(msg, editbox)
+    processCommand(msg)
+end
+
+--
+-- This function processes any slash command that is registered
+--
+-- @param msg     A string containing any text that was present after the
+--                slash command
+--
+function processCommand(msg)
     if msg == 'debug' then
         debug();
-    else if msg == '?' then
+    elseif msg == '?' then
         print("Mactics");
         print("Usage: Target boss and /mct");
         print("Optional arguments: self, debug, <name of boss>");
-    else if msg == 'self' then
+    elseif msg == 'self' then
         --Find player's name, and whisper self
         if UnitGUID("target") then
             printTacts(UnitGUID("target"), "self");
         end
-    else if UnitGUID("target") then
+    elseif UnitGUID("target") then
         printTacts(UnitGUID("target"), "party");
     end
-end
-end
-end
 end
 
 --
@@ -77,7 +92,7 @@ end
 
 --
 -- This function is called when a user switches zones, and once on initial
--- load. It should load the sub-addon containing zone tactics.
+-- load. It loads the sub-addon containing zone tactics.
 --
 -- @note If the user moves out of an applicable zone, there is no need to
 --        unload any tactics currently being held in memory.
@@ -88,9 +103,44 @@ end
 function loadZoneTactics(areaId)
     print("Loading tactics for zone " .. areaId)
 
-    --This is the part where we load the addon containing relevant tactics
+    local addonName   = addonMap[areaId]
+
+    if (addonName ~= nil and IsAddOnLoaded(addonName) == false) then
+        loaded, reason = LoadAddOn(addonName)
+
+        if (loaded == nil) then
+            print("Error loading addon: " .. addonName)
+        else
+            print("Loaded: " .. addonName)
+            currentLoadedPlugin = addonName
+        end
+
+    end
 end
 
 function registerMe(name)
     print(name .. " had just registered, cool")
+end
+
+--
+-- This function finds all of the Mactics tactics plugins and populates a map
+-- of mapId -> applicableAddonName.
+--
+function gatherChildren()
+    for i = 1, GetNumAddOns() do
+        local addonName, _, _, enabled = GetAddOnInfo(i)
+
+        if (GetAddOnMetadata(i, "X-Mactics-Plugin") and enabled) then
+            local mapIdTable =
+                {
+                    strsplit(",", GetAddOnMetadata(i,
+                                                   "X-Mactics-Plugin-MapIds")
+                                    or "")
+                }
+
+            for key, value in pairs(mapIdTable) do
+                addonMap[tonumber(value)] = addonName
+            end
+        end
+    end
 end

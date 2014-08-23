@@ -1,8 +1,8 @@
 ﻿## Interface: 50400
-## Title: Mactics-Core
+## Title: Mactics_Core
 ## Notes: Prints tactics for the betterment of WoWkind.
 ## Version: 1.0
 ## Author: FifteenFifty & LeighF51
 ## LoadOnDemand: 0
 ## Dependencies:
-mactics-core.lua
+Mactics_Core.lua
