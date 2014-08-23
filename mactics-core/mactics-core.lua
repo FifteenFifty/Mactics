@@ -3,28 +3,6 @@ local macticsFrame = CreateFrame("Frame")
 macticsFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 macticsFrame:RegisterEvent("ADDON_LOADED")
 macticsFrame:RegisterEvent("PLAYER_LOGIN")
-macticsFrame:SetScript("OnEvent", frameEvent)
-macticsFrame:SetScript("OnEvent", function(self, event, addonName, ...)
-    if (addonName== "mactics-core") then
-        SLASH_MCT1 = '/mct'
-		
-		--SendChatMessage("debug1" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
-        print("Mactics loaded :)")
-		--SendChatMessage("debug2" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
-        debug()
-		--SendChatMessage("debug3" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
-        loadZoneTactics(GetCurrentMapAreaID())
-		--SendChatMessage("debug4" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
-    end
-
-    if (event == "ZONE_CHANGED_NEW_AREA") then
-	--SendChatMessage("debug5" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
-        loadZoneTactics(GetCurrentMapAreaID())
-		--SendChatMessage("debug6" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
-    end
-	--SendChatMessage("debug7" ,"INSTANCE_CHAT" ,"COMMON" ,"0");
-end)
-
 --
 -- This function is called whenever a registered event occurs
 --
@@ -33,6 +11,20 @@ end)
 -- @param addonName A string containing the name of the addon to which this
 --                  event pertains.
 --
+
+--Much to my annoyance this was the only way I could get the frameEvent function to fire
+--Not entirely sure why calling it from the SetScript method doesn't work
+macticsFrame:SetScript("OnEvent", function(self, event, addonName, ...)
+    if (addonName== "mactics-core") then
+        SLASH_MCT1 = '/mct'
+		loadZoneTactics()
+		
+    end
+
+    if (event == "ZONE_CHANGED_NEW_AREA") then
+        loadZoneTactics()
+    end
+end)
 
 --
 -- This function processes any slash command that is registered
@@ -45,9 +37,8 @@ function SlashCmdList.MCT(msg, editbox)
     if msg == 'debug' then
         debug();
     else if msg == '?' then
-        print("Mactics");
-        print("Usage: Target boss and /mct");
-        print("Optional arguments: self, debug, <name of boss>");
+		macticsHelp();
+        
     else if msg == 'self' then
         --Find player's name, and whisper self
         if UnitGUID("target") then
@@ -72,6 +63,12 @@ function debug()
     print ("Instance ID: " .. GetCurrentMapAreaID());
 end
 
+function macticsHelp()
+	print("Mactics");
+    print("Usage: Target boss and /mct");
+    print("Optional arguments: self, debug, <name of boss>");
+end
+
 --
 -- This function prints tactics for the desired boss.
 --
@@ -90,12 +87,9 @@ end
 -- @note If the user moves out of an applicable zone, there is no need to
 --        unload any tactics currently being held in memory.
 --
--- @param areaId The numeric identifier of the zone into which the user
---               moved.
 --
-function loadZoneTactics(areaId)
-    print("Loading tactics for zone " .. areaId)
-
+function loadZoneTactics()
+    ChatFrame1:AddMessage("<Mactics> Loaded ".. GetZoneText())
     --This is the part where we load the addon containing relevant tactics
 end
 
