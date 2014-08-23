@@ -53,10 +53,10 @@ function SlashCmdList.MCT(msg, editbox)
     elseif msg == 'self' then
         --Find player's name, and whisper self
         if UnitGUID("target") then
-            printTacts(UnitGUID("target"), "self");
+            printTacts(currentMapId, UnitGUID("target"), "self");
         end
     elseif UnitGUID("target") then
-        printTacts(UnitGUID("target"), "party");
+        printTacts(currentMapId, UnitGUID("target"), "party");
     end
 end
 
@@ -82,7 +82,21 @@ function printTacts(mapId, mobId, chatName)
     local id = tonumber(string.sub(mobId,-12,-9),16)
 
     if (currentLoadedPlugin ~= nil) then
-        _G[currentLoadedPlugin]:printTactics(mapId, id, chatname)
+        local bossTable = _G[currentLoadedPlugin]:getTactics(mapId, id)
+
+        if (bossTable == nil) then
+            print("Nothing to print for this target!")
+        else
+            SendChatMessage("Tactics for " ..
+                                bossTable["bossName"] ..
+                                ", written by " ..
+                                bossTable["author"],
+                            "raid");
+
+            for i, v in ipairs(bossTable["tactics"]) do
+                SendChatMessage(v, "raid")
+            end
+        end
     end
 end
 
