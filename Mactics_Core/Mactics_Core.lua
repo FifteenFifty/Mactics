@@ -53,10 +53,23 @@ function SlashCmdList.MCT(msg, editbox)
     elseif msg == 'self' then
         --Find player's name, and whisper self
         if UnitGUID("target") then
-            printTacts(currentMapId, UnitGUID("target"), "self");
+            printTacts(currentMapId, 
+                       tonumber(string.sub(UnitGUID("target"),-12,-9),16), 
+                       "self");
         end
     elseif UnitGUID("target") then
-        printTacts(currentMapId, UnitGUID("target"), "party");
+        printTacts(currentMapId, 
+                   tonumber(string.sub(UnitGUID("target"),-12,-9),16), 
+                   "party");
+    else
+        -- Assume that the argument is a boss name
+        local mobId = 0
+
+        if (currentLoadedPlugin ~= nil) then
+            mobId = _G[currentLoadedPlugin]:getIdFromString(currentMapId, msg)
+        end
+
+        printTacts(currentMapId, mobId, "party");
     end
 end
 
@@ -79,21 +92,24 @@ end
 -- @param chatName The name of the chat to which tactics should be printed.
 --
 function printTacts(mapId, mobId, chatName)
-    local id = tonumber(string.sub(mobId,-12,-9),16)
-
     if (currentLoadedPlugin ~= nil) then
-        local bossTable = _G[currentLoadedPlugin]:getTactics(mapId, id)
+        local bossTable = _G[currentLoadedPlugin]:getTactics(mapId, mobId)
 
         if (bossTable == nil) then
             print("Nothing to print for this target!")
         else
-            SendChatMessage("Tactics for " ..
-                                bossTable["bossName"] ..
-                                ", written by " ..
-                                bossTable["author"],
+            SendChatMessage("Tactics for " .. bossTable["bossName"],
                             "raid");
 
+            local lineCount = 0;
+
             for i, v in ipairs(bossTable["tactics"]) do
+                lineCount = lineCount + 1
+
+                if (lineCount > 5) then
+                    break
+                end
+
                 SendChatMessage(v, "raid")
             end
         end
