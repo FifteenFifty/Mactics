@@ -4,4 +4,7 @@
 ## Author: FifteenFifty
 ## RequiredDeps: Mactics_Core
 ## LoadOnDemand: 1
+## X-Mactics-Plugin: 1
+## X-Mactics-Plugin-Type: RAID
+## X-Mactics-Plugin-MapIds: 504,510
 Mactics_Raid_MoP.lua

@@ -1,8 +1,9 @@
 local macticsFrame  = CreateFrame("Frame")
 local macticsLoaded = 0
+local currentMapId  = 0
 
 addonMap            = {}
-currentLoadedPlugin = ""
+currentLoadedPlugin = nil
 
 --
 -- This function is called whenever a registered event occurs
@@ -13,7 +14,7 @@ currentLoadedPlugin = ""
 --                  event pertains.
 --
 local function frameEvent(self, event, addonName, ...)
-    if (addonName == "mactics-core") then
+    if (addonName == "Mactics_Core") then
         macticsLoaded = 1
         SLASH_MCT1 = '/mct'
 
@@ -21,11 +22,12 @@ local function frameEvent(self, event, addonName, ...)
 
         print("Mactics loaded :)")
         debug()
-        loadZoneTactics(GetCurrentMapAreaID())
-    end
 
-    if (macticsLoaded == 1 and event == "ZONE_CHANGED_NEW_AREA") then
-        loadZoneTactics(GetCurrentMapAreaID())
+        currentMapId = GetCurrentMapAreaID()
+        loadZoneTactics(currentMapId)
+    elseif (macticsLoaded == 1 and event == "ZONE_CHANGED_NEW_AREA") then
+        currentMapId = GetCurrentMapAreaID()
+        loadZoneTactics(currentMapId)
     end
 end
 
@@ -42,16 +44,6 @@ macticsFrame:SetScript("OnEvent", frameEvent)
 -- @param editbox I have literally no idea
 --
 function SlashCmdList.MCT(msg, editbox)
-    processCommand(msg)
-end
-
---
--- This function processes any slash command that is registered
---
--- @param msg     A string containing any text that was present after the
---                slash command
---
-function processCommand(msg)
     if msg == 'debug' then
         debug();
     elseif msg == '?' then
@@ -80,14 +72,18 @@ function debug()
 end
 
 --
--- This function prints tactics for the desired boss.
+-- This function farms out tactic printing to the currently loaded plugin.
 --
--- @param
--- @param
+-- @param mapId    The identifier of the current map.
+-- @param mobId    The identifier of the currently selected target.
+-- @param chatName The name of the chat to which tactics should be printed.
 --
-function printTacts(mobId, chatName)
-    local id=tonumber(string.sub(mobId,-12,-9),16)
-    print("lel, that's not implemented yet");
+function printTacts(mapId, mobId, chatName)
+    local id = tonumber(string.sub(mobId,-12,-9),16)
+
+    if (currentLoadedPlugin ~= nil) then
+        _G[currentLoadedPlugin]:printTactics(mapId, id, chatname)
+    end
 end
 
 --
@@ -116,10 +112,6 @@ function loadZoneTactics(areaId)
         end
 
     end
-end
-
-function registerMe(name)
-    print(name .. " had just registered, cool")
 end
 
 --
