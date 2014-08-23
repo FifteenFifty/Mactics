@@ -15,14 +15,13 @@ macticsFrame:RegisterEvent("PLAYER_LOGIN")
 --Much to my annoyance this was the only way I could get the frameEvent function to fire
 --Not entirely sure why calling it from the SetScript method doesn't work
 macticsFrame:SetScript("OnEvent", function(self, event, addonName, ...)
-    if (addonName== "mactics-core") then
-        SLASH_MCT1 = '/mct'
-		loadZoneTactics()
-		
-    end
+    -- if (addonName== "mactics-core") then
+        -- SLASH_MCT1 = '/mct'
+		-- loadZoneTactics()		
+    -- end
 
     if (event == "ZONE_CHANGED_NEW_AREA") then
-        loadZoneTactics()
+		loadZoneTactics()
     end
 end)
 
